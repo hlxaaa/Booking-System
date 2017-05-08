@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/buy.css">
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="js/buy.js"></script>
+
+</head>
+<body>
+<!-- 导航 -->
+<nav class="navbar navbar-default" id="head">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">知旅行</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+  <% if (user=="") {%>
+        <li><a id="a_login" data-toggle="modal" data-target="#myModal" href="#">登录</a></li>
+        <li><a data-toggle="modal" data-target="#regModal"  href="#">注册</a></li>
+         <% }else{%>
+        <li><a id="a_login"  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"><%=user%></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/buyer?user=<%=user%>">我的乘客</a></li>
+            </ul>
+        </li>
+        <li><a  onclick="func_out()" href="#">退出</a></li>
+         <%}%>
+        <li><a onclick="func_order()" style="cursor: pointer;">全部订单</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 导航 -->
+<div class="col">
+    <div class="col-lg-8 col-md-offset-2" style="height: 100px;">
+        <div class="col-md-2" style="height: 200px">车次信息</div>
+        <div class="col-md-10 alert-success" style="height: 170px">
+        <% results.forEach(function(result){%>
+            <div class=" col-md-2 col-md-offset-1" style="margin-top: 50px"><h4 id="no"><%=result.no%></h4></div>
+            <div class=" col-md-2">
+                <div class="col">
+                    <div id="startPlace"><h2><%=result.startPlace%></h2></div>
+                    <div id="startTime" style="margin-left: 15px;"><%=result.startTime%></div>
+                    <div id="startDate"><%=date%></div>
+                </div>
+            </div>
+            <div class=" col-md-2" style="margin-top: 50px;padding: 0;"><img src="/img/clock.png"><%=result.useTime%></div>
+            <div class=" col-md-2">
+                <div class="col">
+                    <div id="endPlace"><h2><%=result.endPlace%></h2></div>
+                    <div style="margin-left: 15px;"><%=result.endTime%></div>
+                    <div><%=date%></div>
+                </div>
+            </div>
+            <div class=" col-md-2"  style="margin-top: 40px"><h3>￥<span id="price"><%=result.price%></span></h3></div>
+             <% }) %>
+        </div>
+
+    </div>
+    <div class="col-lg-8 col-md-offset-2" style="height: 100px;margin-top: 120px;">
+        <div class="col-md-2" style="height: 400px">乘客信息</div>
+        <div class="col-md-10 alert-success" >
+            <div class="col">
+                <div class="col-md-12" id="buyer">
+              <% if(results2!='') {%>
+              <% results2.forEach(function(result){%> 
+                    <div >
+                      <label class="col-md-12" style="">
+                        <span class="col-md-3"><input id="ff<%=result.identity%>" onclick="func_check('f<%=result.identity%>')" type="checkbox" name="ckBox" value="option1" >姓名:<h5><%=result.name%></h5></span><span class="col-md-5">证件号:<h5 id="f<%=result.identity%>" name="identity"><%=result.identity%></h5></span>
+                      </label>
+                    </div>
+              <% })} %> 
+                </div>
+                <div class="col-md-12">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="" id="radio">
+                        新增
+                      </label>
+                    </div>
+                  <form onsubmit="func_addBuyer2(); return false;">
+                    <div class="form-group">
+                      <label for="inputEmail" class="col-lg-3">姓名</label>
+                      <div class="col-lg-7">
+                        <input type="text" class="form-control" id="name" readonly="readonly" autocomplete="off" required oninvalid="setCustomValidity('请输入姓名')" oninput="setCustomValidity('')">
+                      </div>
+                    </div>
+                     <div class="form-group">
+                      <label for="inputEmail" class="col-lg-3">证件</label>
+                      <div class="col-lg-7">
+                        <input type="text" class="form-control" id="identity" readonly="readonly" autocomplete="off" minlength="18" maxlength="18" >
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-md-offset-6">
+                      <input type="submit" class="btn btn-info" value="确定">
+                        <!-- <a href="#" class="btn btn-info">确定</a> -->
+                    </div>
+                    </form>
+                </div>
+                <div>
+                    <a onclick="func_buy()" class="btn btn-danger">确认购买</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<!-- 登录模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    登录<a style="cursor: pointer;" id="reg_now" style="margin-left: 100px" onclick="func_logToReg()">立即注册</a>
+                </h4>
+            </div>
+
+            <form class="form-horizontal" id="f_login" onsubmit="return false" style="margin-top: 20px">
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">用户名</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="inputUser">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">密码</label>
+                  <div class="col-lg-6">
+                    <input type="password" class="form-control" id="inputPassword">
+                  </div>
+                </div>
+                <div class="col-md-offset-5">
+                    <a href="#" class="btn btn-info" onclick="func_head()">登录</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 登录模态框结束 -->
+<!-- 注册模态框 -->
+<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    欢迎注册
+                </h4>
+            </div>
+            
+            <form class="form-horizontal" id="f_login" onsubmit="return false" style="margin-top: 20px">
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">用户名</label><span id="userText"  style="color: red;"></span>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="inputUser1">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">密码</label><span id="passwordText" style="color: red;"></span>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="inputPassword1">
+                  </div>
+                </div>
+
+                <div class="col-md-offset-5">
+                    <a href="#" class="btn btn-info" onclick="func_reg()">注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 注册模态框结束 -->
+
+
+</body>
+</html>

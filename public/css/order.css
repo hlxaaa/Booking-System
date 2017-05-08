@@ -1,0 +1,12 @@
+body{font-family: "Microsoft YaHei";background: #f6f6f6}
+#order:hover{
+	/*border: 1px solid #DAA520;*/
+	box-shadow: 5px 5px 5px #888888;
+}
+.arr{
+	display:block;
+	width:83px;
+	height:6px;
+	background:url(../img/zhishi.png) no-repeat ;
+
+}

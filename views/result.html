@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/result.css">
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/result.js"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="css/btn.css"> -->
+
+</head>
+<body>
+<!-- 导航 -->
+<nav class="navbar navbar-default" id="head">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">知旅行</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+<% if (user=="") {%>
+        <li><a id="a_login" data-toggle="modal" data-target="#myModal" href="#">登录</a></li>
+        <li><a data-toggle="modal" data-target="#regModal"  href="#">注册</a></li>
+         <% }else{%>
+        <li><a id="a_login"  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"><%=user%></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/buyer?user=<%=user%>">我的乘客</a></li>
+            </ul>
+        </li>
+        <li><a  onclick="func_out()" href="#">退出</a></li>
+         <%}%>
+        <li><a onclick="func_order()" style="cursor: pointer;">全部订单</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 导航 -->
+
+
+<ul class="nav nav-tabs">
+  <li class=""><a href="/test?start=<%=start%>&end=<%=end%>&date=<%=date1%>"  ><%=date1%></a></li>
+  <li class="active"><a href="/test?start=<%=start%>&end=<%=end%>&date=<%=date2%>" ><%=date2%></a></li>
+  <li class=""><a href="/test?start=<%=start%>&end=<%=end%>&date=<%=date3%>" ><%=date3%></a></li>
+</ul>
+<% if(result=='null'){%>
+<img src="img/sorry.jpg" style="width: 200px"><span class="label label-warning">找不到票</span>
+<%}else{%>
+<div id="myTabContent" class="tab-content">
+  <table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>车次信息</th>
+      <th>发/到时间</th>
+      <th>发/到站</th>
+      <th>运行时长</th>
+      <th>价格</th>
+      <th>剩余票数</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  <% results.forEach(function(result){%>
+  <form action="/buy" method="post" id="second">
+    <tr>
+      <td><%=result.no %></td><input type="hidden" name="no" value="<%=result.no %>">
+      <td><%=result.startTime %>-<%=result.endTime %></td> 
+      <td><%=result.startPlace %>-<%=result.endPlace %></td> 
+      <td><%=result.useTime %></td> 
+      <td><%=result.price %></td> 
+      <td><%=result.leftTickets %></td> 
+      <td hidden="hidden" id="start"><%=result.startPlace %></td>
+      <td hidden="hidden" id="end"><%=result.endPlace %></td>
+      <td><input type="submit" value="购买" ></td> 
+    </tr>
+  </form>
+  <% }) %>
+
+  </tbody>
+</table> 
+</div>
+ <% } %>
+<!-- 登录模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    登录<a style="cursor: pointer;" id="reg_now" style="margin-left: 100px" onclick="func_logToReg()">立即注册</a>
+                </h4>
+            </div>
+
+            <form class="form-horizontal" id="f_login" onsubmit="return false" style="margin-top: 20px">
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">用户名</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="inputUser">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">密码</label>
+                  <div class="col-lg-6">
+                    <input type="password" class="form-control" id="inputPassword">
+                  </div>
+                </div>
+                <div class="col-md-offset-5">
+                    <a href="#" class="btn btn-info" onclick="func_head()">登录</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 登录模态框结束 -->
+<!-- 注册模态框 -->
+<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    欢迎注册
+                </h4>
+            </div>
+            
+            <form class="form-horizontal" id="f_login" onsubmit="return false" style="margin-top: 20px">
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">用户名</label><span id="userText"  style="color: red;"></span>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="inputUser1">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label col-md-offset-1">密码</label><span id="passwordText" style="color: red;"></span>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="inputPassword1">
+                  </div>
+                </div>
+
+                <div class="col-md-offset-5">
+                    <a href="#" class="btn btn-info" onclick="func_reg()">注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 注册模态框结束 -->
+
+</body>
+</html>

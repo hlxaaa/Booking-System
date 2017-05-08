@@ -1,0 +1,6 @@
+body{font-family: "Microsoft YaHei"}
+body{background: #f6f6f6}
+
+#test:hover{
+	box-shadow: 2px 2px 2px #888888;
+}

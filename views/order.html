@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/order.css">
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="js/btn.js"></script>
+
+</head>
+<body>
+<!-- 导航 -->
+<nav class="navbar navbar-default" id="head">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">知旅行</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+<% if (user=="") {%>
+        <li><a id="a_login" data-toggle="modal" data-target="#myModal" href="#">登录</a></li>
+    <li><a data-toggle="modal" data-target="#regModal"  href="#">注册</a></li>
+         <% }else{%>
+        <li><a id="a_login"  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"><%=user%></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/buyer?user=<%=user%>">我的乘客</a></li>
+            </ul>
+        </li>
+        <li><a onclick="func_out()" href="/">退出</a></li>
+         <%}%>
+        <li><a href="" onclick="func_order()" >全部订单</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 导航 -->
+
+<!-- <div id="myTabContent" class="tab-content"> -->
+<div class="col-md-10 col-md-offset-1">
+  <% results.forEach(function(result){%>
+      <div id="order" class="col-md-5" style="height: 300px;margin: 30px;border-radius: 10px;background: url(/img/bg.jpg) fixed center center no-repeat; color: black;font-weight: bold;">
+        <div class="col-md-12" style="height: 50%;">
+          <div class="col-md-12" style="height: 33%">
+            <h4>下单时间:<%=result.date%></h4>
+          </div>
+          <div class="col-md-12" style="height: 33%">
+            <h4>订单号:<%=result.id%></h4>
+          </div>
+          <div class="col-md-12" style="height: 33%">
+            <h4>姓名:<%=result.name%></h4>
+          </div>
+        </div>
+        <div class="col-md-12" style="height: 50%;">
+          <div class="col-md-10" style="display: inline;">
+            <div class="col-md-3" style="margin-top:50px;padding: 0;font-size: 200%" >
+              <%=result.startPlace%>
+            </div>
+            <div class="col-md-6" style="height: 100%;text-align:center;">
+              <div style="margin-top: 50px;">
+                <%=result.startDate%>
+                <img src="/img/zhishi.png">
+                <%=result.startTime%>
+              </div>
+            </div>
+            <div class="col-md-3" style="line-height: 146px;padding: 0;font-size: 200%">
+              <%=result.endPlace%>
+            </div>
+          </div>
+          <div class="col-md-2" style="line-height: 146px;padding: 0;font-size: 150%">
+            ￥<%=result.price%>
+          </div>
+        </div>
+      </div>
+          <% }) %>
+<!-- </div> -->
+</div>
+
+</body>
+</html>

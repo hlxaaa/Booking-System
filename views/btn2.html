@@ -1,0 +1,20 @@
+<!-- 导航 -->
+
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">知旅行</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+      	<li><a id="a_login"  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"><%=user%></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/buyer?user=<%=user%>">我的乘客</a></li>
+            </ul>
+        </li>
+		    <li><a onclick="func_out()" href="#">退出</a></li>
+        <li><a style="cursor: pointer;" onclick="func_order()">全部订单</a></li>
+      </ul>
+    </div>
+  </div>
+
+<!-- 导航 -->

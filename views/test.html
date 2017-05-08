@@ -1,0 +1,15 @@
+         <tbody> 
+          <% results.forEach(function(result){%>
+          <form action="/buy" method="post" id="second">
+            <tr>
+              <td><%=result.no %></td><input type="hidden" name="no" value="<%=result.no %>">
+              <td><%=result.startTime %>-<%=result.endTime %></td> 
+           <td><%=result.startPlace %>-<%=result.endPlace %></td> 
+           <td><%=result.useTime %></td> 
+           <td><%=result.price %></td> 
+           <td><%=result.left %></td> 
+           <td><input type="submit" value="购买" ></td> 
+            </tr>
+            </form>
+            <% }) %>
+         </tbody> 

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/buyer.css">
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="js/buyer.js"></script>
+
+</head>
+<body>
+<!-- 导航 -->
+<nav class="navbar navbar-default" id="head">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">知旅行</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+<% if (user=="") {%>
+        <li><a id="a_login" data-toggle="modal" data-target="#myModal" href="#">登录</a></li>
+    <li><a data-toggle="modal" data-target="#regModal"  href="#">注册</a></li>
+         <% }else{%>
+        <li><a id="a_login"  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"><%=user%></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/buyer?user=<%=user%>">我的乘客</a></li>
+            </ul>
+        </li>
+        <li><a  onclick="func_out()" href="/">退出</a></li>
+         <%}%>
+        <li><a onclick="func_order()" style="cursor: pointer;">全部订单</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 导航 -->
+
+<div id="myTabContent" class="tab-content">
+<!--   <table class="table">
+  <thead>
+    <tr>
+      
+      <th>姓名</th>
+      <th>证件</th>
+      <th>#</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% results.forEach(function(result){%>
+    <tr id="<%=result.id%>">
+      <td>
+          <%=result.name%>
+      </td>
+      <td><%=result.identity%></td>
+      <td><a href="#" class="btn btn-default" onclick="func_delete(<%=result.id%>)">删除</a></td>
+    </tr>   
+  <% }) %>
+  </tbody>
+
+</table>
+</div>
+  -->
+<% results.forEach(function(result){%>
+<div class="col-md-2" id="<%=result.id%>">
+  <div id="test" class="panel panel-primary">
+    <div class="panel-heading">
+      <button type="button" class="close" data-toggle="modal" aria-hidden="true"  data-target="#delete<%=result.id%>" >
+                    &times;
+      </button>
+      <h3 class="panel-title"><%=result.name%></h3>
+
+    </div>
+    <div class="panel-body">
+      <%=result.identity%>
+    </div>
+  </div>
+</div>
+
+
+<!-- 确认删除模态框 -->
+<div class="modal fade" id="delete<%=result.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+           <!-- <span class="label label-danger">确定要删除吗?</span> -->
+          <div class="modal-header">  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+        <h4 class="modal-title">提示信息</h4>  
+      </div>  
+      <div class="modal-body">  
+        <p>您确认要删除吗？</p>  
+      </div>  
+      <div class="modal-footer">  
+         <input type="hidden" id="url"/>  
+         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>  
+         <a  onclick="func_delete(<%=result.id%>)" class="btn btn-success" data-dismiss="modal">确定</a>  
+      </div>  
+        </div>
+    </div>
+</div>
+<!-- 确认删除模态框结束 -->
+<% }) %>
+
+
+</body>
+</html>
